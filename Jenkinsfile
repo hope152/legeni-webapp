@@ -35,15 +35,11 @@ pipeline {
         stage('Push Docker Hub') {
             when { expression { params.PUSH } }
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds',
-                                                  usernameVariable: 'DH_USER',
-                                                  passwordVariable: 'DH_TOKEN')]) {
-                    sh '''
-                        echo "$DH_TOKEN" | docker login -u "$DH_USER" --password-stdin
-                        docker push $IMAGE:$VERSION
-                        docker push $IMAGE:latest
-                    '''
-                }
+                sh '''
+                    echo "dckr_pat_lSZ6mWjj5lIuN5kjwrrvFxDIC50I" | docker login -u "$DOCKERHUB_ID" --password-stdin
+                    docker push $IMAGE:$VERSION
+                    docker push $IMAGE:latest
+                '''
             }
         }
     }
@@ -51,9 +47,6 @@ pipeline {
     post {
         always {
             sh 'docker rm -f $TEST_CONTAINER || true; docker network rm $CI_NETWORK || true'
-        }
-        success {
-            echo "Image ${IMAGE}:${VERSION} construite et validée"
         }
     }
 }

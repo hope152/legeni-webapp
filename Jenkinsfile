@@ -39,7 +39,7 @@ pipeline {
                 branch 'main' 
             }
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker hub',
+                withCredentials([usernamePassword(credentialsId: 'dockerhub',
                                                   usernameVariable: 'DH_USER',
                                                   passwordVariable: 'DH_TOKEN')]) {
                     sh '''
